@@ -34,11 +34,11 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     console.log(interaction.data.name)
-    if(interaction.data.name == 'yo'){
+    if(interaction.data.name == 'color'){
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `Yo ${interaction.member.user.username}!`,
+          content: `This command is not yet functional!`,
         },
       });
     }
@@ -54,7 +54,6 @@ app.get('/register_commands', async (req,res) =>{
       "description": "Allows you to change your role color",
       "options": [
 	      {
-		      type: 3,
 		      name: 'hex',
 		      description: 'hex color code',
 		      required: true
