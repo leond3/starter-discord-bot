@@ -50,9 +50,16 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 app.get('/register_commands', async (req,res) =>{
   let slash_commands = [
     {
-      "name": "yo",
-      "description": "replies with Yo!",
-      "options": []
+      "name": "color",
+      "description": "Allows you to change your role color",
+      "options": [
+	      {
+		      type: 3,
+		      name: 'hex',
+		      description: 'hex color code',
+		      required: true
+	      }
+      ]
     }
   ]
   try
