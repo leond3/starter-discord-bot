@@ -31,6 +31,7 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
 		console.log(interaction.data.name);
 		if (interaction.data.name === 'color') {
+			console.log(interaction.data.options);
 			return res.send({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
@@ -43,7 +44,7 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
 
 
-app.get('/register_commands', async (req,res) =>{
+app.get('/register_commands', async (req, res) =>{
 	let slash_commands = [
 		{
 			"name": "color",
@@ -61,7 +62,7 @@ app.get('/register_commands', async (req,res) =>{
 		let discord_response = await discord_api.put(
 			`/applications/${APPLICATION_ID}/guilds/${GUILD_ID}/commands`,
 			slash_commands
-		)
+		);
 		console.log(discord_response.data);
 		return res.send('commands have been registered');
 	} catch (e) {
@@ -72,8 +73,8 @@ app.get('/register_commands', async (req,res) =>{
 });
 
 
-app.get('/', async (req,res) => {
-  return res.send('Follow documentation ')
+app.get('/', async (req, res) => {
+  return res.send('Follow documentation ');
 });
 
 
