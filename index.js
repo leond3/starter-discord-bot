@@ -30,8 +30,19 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
 		console.log(interaction.data.name);
-		if (interaction.data.name === 'color') {
-			console.log(interaction.data.options);
+		if (interaction.data.name === 'color' && interaction.data.options && interaction.data.options[0]?.name === 'hex') {
+			let color = interaction.data.options[0].value.replace('#', '');
+			console.log(interaction.data.options.hex);
+			
+			if (!color.match(/^[0-9a-fA-F]{6}$/)) {
+				return res.send({
+					type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+					data: {
+						content: 'Invalid HEX color, please use format: **`#FFFFFF`**',
+					},
+				});
+    			}
+			
 			return res.send({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
@@ -47,15 +58,14 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 app.get('/register_commands', async (req, res) =>{
 	let slash_commands = [
 		{
-			"name": "color",
-			"description": "Allows you to change your role color",
-			"options": [
-				{
-					name: 'hex',
-					description: 'hex color code',
-					required: true
-				}
-			]
+			name: 'color',
+			description: 'Change the color of your username',
+			options: [{
+				name: 'hex',
+				description: 'The hex code of the color you want to use',
+				type: 3,
+				required: true
+			}]
 		}
 	];
 	try {
